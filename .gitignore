@@ -1,0 +1,4 @@
+node_modules/
+expense_manager.db
+*.log
+.DS_Store

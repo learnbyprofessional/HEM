@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Expense Manager V1.1</title>
+    <link rel="icon" type="image/x-icon" href="icon.ico">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Auth Container -->
+    <div id="authContainer" class="auth-container">
+        <div class="auth-box">
+            <div class="app-logo-title">
+                <img src="icon.ico" alt="HEM Logo" class="app-logo">
+                <h1 class="app-title">Home Expense Manager V1.1</h1>
+            </div>
+            
+            <!-- Sign In Form -->
+            <div id="signInForm" class="auth-form">
+                <h2>Sign In</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>User ID</label>
+                        <input type="text" id="loginUserid" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                    <p class="auth-switch">Don't have an account? <a href="#" id="showSignUp">Sign Up</a></p>
+                    <p class="auth-switch"><a href="#" id="showChangePassword">Change Password</a></p>
+                </form>
+            </div>
+
+            <!-- Sign Up Form -->
+            <div id="signUpForm" class="auth-form" style="display: none;">
+                <h2>Sign Up</h2>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label>User Name</label>
+                        <input type="text" id="signupUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label>User ID</label>
+                        <input type="text" id="signupUserid" readonly>
+                        <small>Auto-generated from username</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="signupPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                    <p class="auth-switch">Already have an account? <a href="#" id="showSignIn">Sign In</a></p>
+                </form>
+            </div>
+
+            <!-- Change Password Form -->
+            <div id="changePasswordForm" class="auth-form" style="display: none;">
+                <h2>Change Password</h2>
+                <form id="passwordChangeForm">
+                    <div class="form-group">
+                        <label>User ID</label>
+                        <input type="text" id="changePassUserid" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Current Password</label>
+                        <input type="password" id="changePassOldPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" id="changePassNewPassword" required minlength="4">
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm New Password</label>
+                        <input type="password" id="changePassConfirmPassword" required minlength="4">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Change Password</button>
+                    <p class="auth-switch"><a href="#" id="backToSignIn">Back to Sign In</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="appContainer" class="app-container" style="display: none;">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo-title">
+                    <img src="icon.ico" alt="HEM Logo" class="sidebar-logo">
+                    <h2 class="sidebar-title">HEM <span class="version-text">V1.1</span></h2>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-page="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-page="transaction">
+                    <span class="nav-icon">💰</span>
+                    <span>Transaction</span>
+                </a>
+                <a href="#" class="nav-item" data-page="history">
+                    <span class="nav-icon">📜</span>
+                    <span>Transaction History</span>
+                </a>
+                <a href="#" class="nav-item" data-page="reports">
+                    <span class="nav-icon">📊</span>
+                    <span>Reports</span>
+                </a>
+                <a href="#" class="nav-item" data-page="account">
+                    <span class="nav-icon">🏦</span>
+                    <span>Account</span>
+                </a>
+                <a href="#" class="nav-item" data-page="about">
+                    <span class="nav-icon">ℹ️</span>
+                    <span>About</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <span id="currentUser"></span>
+                </div>
+                <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Dashboard Page -->
+            <div id="dashboardPage" class="page active">
+                <h1>Dashboard</h1>
+                
+                <!-- Summary Cards -->
+                <div class="dashboard-cards">
+                    <div class="dashboard-card income-card">
+                        <div class="card-icon">💰</div>
+                        <div class="card-content">
+                            <h3>Total Income</h3>
+                            <p class="card-value" id="totalIncome">₹0.00</p>
+                        </div>
+                    </div>
+                    <div class="dashboard-card expense-card">
+                        <div class="card-icon">💸</div>
+                        <div class="card-content">
+                            <h3>Total Expense</h3>
+                            <p class="card-value" id="totalExpense">₹0.00</p>
+                        </div>
+                    </div>
+                    <div class="dashboard-card balance-card">
+                        <div class="card-icon">💵</div>
+                        <div class="card-content">
+                            <h3>Net Balance</h3>
+                            <p class="card-value" id="netBalance">₹0.00</p>
+                        </div>
+                    </div>
+                    <div class="dashboard-card accounts-card" onclick="navigateToAccountDetails()" style="cursor: pointer;">
+                        <div class="card-icon">🏦</div>
+                        <div class="card-content">
+                            <h3>Total Accounts</h3>
+                            <p class="card-value" id="totalAccounts">0</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts Row 1 -->
+                <div class="dashboard-charts">
+                    <div class="chart-container">
+                        <h3>Account-wise Balance</h3>
+                        <canvas id="accountBalanceChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Income vs Expense</h3>
+                        <canvas id="incomeExpenseChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Charts Row 2 -->
+                <div class="dashboard-charts">
+                    <div class="chart-container">
+                        <h3>Category-wise Expenses</h3>
+                        <canvas id="categoryExpenseChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Daily Transactions (Last 7 Days)</h3>
+                        <canvas id="dailyTransactionChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Charts Row 3 -->
+                <div class="dashboard-charts">
+                    <div class="chart-container full-width">
+                        <h3>Top 10 Items by Spending</h3>
+                        <canvas id="topItemsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transaction Page -->
+            <div id="transactionPage" class="page">
+                <h1>Transaction Management</h1>
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="dailyTransaction">Daily Transaction</button>
+                    <button class="tab-btn" data-tab="itemSearch">Item Search</button>
+                    <button class="tab-btn" data-tab="manageCategories">Manage Categories</button>
+                    <button class="tab-btn" data-tab="manageItems">Manage Items</button>
+                    <button class="tab-btn" data-tab="manageUnits">Manage Units</button>
+                </div>
+
+                <!-- Daily Transaction Tab -->
+                <div id="dailyTransaction" class="tab-content active">
+                    <!-- Edit Mode Banner -->
+                    <div id="editModeBanner" class="edit-mode-banner" style="display: none;">
+                        <h3>📝 Editing Transaction #<span id="editTransactionId"></span></h3>
+                        <button class="btn" onclick="cancelEditMode()">Cancel Edit</button>
+                    </div>
+                    <form id="transactionForm" class="form-grid">
+                        <div class="form-group">
+                            <label>Type</label>
+                            <select id="transactionType" required>
+                                <option value="">Select Type</option>
+                                <option value="Income">Income</option>
+                                <option value="Expense">Expense</option>
+                                <option value="Transfer">Transfer</option>
+                            </select>
+                        </div>
+
+                        <!-- Regular Transaction Fields (Income/Expense) -->
+                        <div class="form-group regular-field">
+                            <label>Category</label>
+                            <select id="transactionCategory" required disabled>
+                                <option value="">Select Category</option>
+                            </select>
+                        </div>
+                        <div class="form-group regular-field">
+                            <label>
+                                Item
+                                <span class="multi-select-toggle">
+                                    <input type="checkbox" id="multiItemToggle">
+                                    <label for="multiItemToggle">Multiple Items</label>
+                                </span>
+                            </label>
+                            <select id="transactionItem" required disabled>
+                                <option value="">Select Item</option>
+                            </select>
+                            <div id="selectedItemsContainer" style="display: none;">
+                                <div id="selectedItemsList"></div>
+                            </div>
+                        </div>
+
+                        <!-- Expense Fields (Price & Quantity) -->
+                        <div class="form-group expense-field">
+                            <label>Price</label>
+                            <input type="number" id="transactionPrice" step="0.01">
+                        </div>
+                        <div class="form-group expense-field">
+                            <label>Quantity</label>
+                            <input type="number" id="transactionQuantity" step="0.01">
+                        </div>
+
+                        <!-- Income Fields (Amount) -->
+                        <div class="form-group income-field" style="display: none;">
+                            <label>Amount</label>
+                            <input type="number" id="transactionAmount" step="0.01">
+                        </div>
+
+                        <!-- Date Field (for Income & Expense) -->
+                        <div class="form-group date-field" style="display: none;">
+                            <label>Date</label>
+                            <input type="date" id="transactionDate">
+                        </div>
+
+                        <!-- Transfer Fields -->
+                        <div class="form-group transfer-field" style="display: none;">
+                            <label>From Account</label>
+                            <select id="transferFromAccount">
+                                <option value="">Select Source Account</option>
+                            </select>
+                        </div>
+                        <div class="form-group transfer-field" style="display: none;">
+                            <label>Transfer Amount</label>
+                            <input type="number" id="transferAmount" step="0.01">
+                        </div>
+                        <div class="form-group transfer-field" style="display: none;">
+                            <label>To Account</label>
+                            <select id="transferToAccount">
+                                <option value="">Select Destination Account</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group regular-field">
+                            <label>Remark/Description</label>
+                            <input type="text" id="transactionRemark">
+                        </div>
+                        <div class="form-group transfer-field" style="display: none;">
+                            <label>Remark/Description</label>
+                            <input type="text" id="transferRemark">
+                        </div>
+                        <div class="form-group regular-field">
+                            <label>Total</label>
+                            <input type="number" id="transactionTotal" step="0.01" readonly>
+                        </div>
+                        <div class="form-group regular-field">
+                            <label>Account</label>
+                            <select id="transactionAccount" required>
+                                <option value="">Select Account</option>
+                            </select>
+                        </div>
+                        <div class="form-group regular-field">
+                            <label>Current Balance</label>
+                            <input type="text" id="accountBalance" readonly>
+                        </div>
+                        <div class="form-group expense-field">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="onCreditCheckbox">
+                                💳 On Credit (Payment Pending)
+                            </label>
+                        </div>
+                        <div class="form-group full-width">
+                            <button type="submit" id="transactionSubmitBtn" class="btn btn-primary">Submit Transaction</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Item Search Tab -->
+                <div id="itemSearch" class="tab-content">
+                    <div class="item-search-container">
+                        <h3>Search Items</h3>
+                        <div class="search-box">
+                            <input type="text" id="itemSearchInput" placeholder="Search for items (live search)...">
+                            <span class="search-icon">🔍</span>
+                        </div>
+                        <div class="advanced-search-section">
+                            <button type="button" class="btn btn-secondary" id="toggleAdvancedSearch">Advanced Search ▼</button>
+                            <div id="advancedSearchFields" style="display: none;">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Category ID</label>
+                                        <input type="number" id="searchCategoryId" placeholder="Enter Category ID">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Item ID</label>
+                                        <input type="number" id="searchItemId" placeholder="Enter Item ID">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Unit ID</label>
+                                        <input type="number" id="searchUnitId" placeholder="Enter Unit ID">
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-primary" id="advancedSearchBtn">Search</button>
+                                        <button type="button" class="btn btn-secondary" id="clearAdvancedSearchBtn">Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="itemSearchResults" style="display: none;">
+                            <table id="itemSearchTable">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Item ID</th>
+                                        <th>Item Name</th>
+                                        <th>Type</th>
+                                        <th>Category ID</th>
+                                        <th>Category</th>
+                                        <th>Unit ID</th>
+                                        <th>Unit</th>
+                                        <th>Source</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manage Categories Tab -->
+                <div id="manageCategories" class="tab-content">
+                    <div class="manage-section-header">
+                        <h3>Manage Categories</h3>
+                    </div>
+                    
+                    <!-- Add Category Form -->
+                    <div class="add-form-section">
+                        <h4>Add New Category</h4>
+                        <form id="categoryForm" class="form-inline">
+                            <div class="form-group">
+                                <label>Type</label>
+                                <select id="categoryType" required>
+                                    <option value="">Select Type</option>
+                                    <option value="Income">Income</option>
+                                    <option value="Expense">Expense</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Category Name</label>
+                                <input type="text" id="categoryName" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Category</button>
+                        </form>
+                    </div>
+                    
+                    <!-- Filter Section -->
+                    <div class="filter-section">
+                        <div class="filter-group">
+                            <label>Filter by Type:</label>
+                            <select id="manageCategoryTypeFilter">
+                                <option value="">All</option>
+                                <option value="Expense">Expense</option>
+                                <option value="Income">Income</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>
+                                <input type="checkbox" id="showDisabledCategories" checked> Show Disabled
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table id="manageCategoriesTable">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>Code</th>
+                                    <th>Category Name</th>
+                                    <th>Type</th>
+                                    <th>Items Count</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Manage Items Tab -->
+                <div id="manageItems" class="tab-content">
+                    <div class="manage-section-header">
+                        <h3>Manage Items</h3>
+                    </div>
+                    
+                    <!-- Add Item Form -->
+                    <div class="add-form-section">
+                        <h4>Add New Item</h4>
+                        <form id="itemForm" class="form-inline">
+                            <div class="form-group">
+                                <label>Type</label>
+                                <select id="itemType" required>
+                                    <option value="">Select Type</option>
+                                    <option value="Income">Income</option>
+                                    <option value="Expense">Expense</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Category</label>
+                                <select id="itemCategory" required disabled>
+                                    <option value="">Select Category</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Item Name</label>
+                                <input type="text" id="itemName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Unit</label>
+                                <select id="itemUnit" required>
+                                    <option value="">Select Unit</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Item</button>
+                        </form>
+                    </div>
+                    
+                    <!-- Filter Section -->
+                    <div class="filter-section">
+                        <div class="filter-group">
+                            <label>Filter by Type:</label>
+                            <select id="manageItemTypeFilter">
+                                <option value="">All</option>
+                                <option value="Expense">Expense</option>
+                                <option value="Income">Income</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Filter by Category:</label>
+                            <select id="manageItemCategoryFilter">
+                                <option value="">All Categories</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>
+                                <input type="checkbox" id="showDisabledItems" checked> Show Disabled
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table id="manageItemsTable">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>Code</th>
+                                    <th>Item Name</th>
+                                    <th>Type</th>
+                                    <th>Category</th>
+                                    <th>Unit</th>
+                                    <th>Source</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Manage Units Tab -->
+                <div id="manageUnits" class="tab-content">
+                    <div class="manage-section-header">
+                        <h3>Manage Units</h3>
+                    </div>
+                    
+                    <!-- Add Unit Form -->
+                    <div class="add-form-section">
+                        <h4>Add New Unit</h4>
+                        <form id="unitForm" class="form-inline">
+                            <div class="form-group">
+                                <label>Unit Name</label>
+                                <input type="text" id="unitName" required placeholder="e.g., KG, Piece, Liter">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Unit</button>
+                        </form>
+                    </div>
+                    
+                    <!-- Filter Section -->
+                    <div class="filter-section">
+                        <div class="filter-group">
+                            <label>
+                                <input type="checkbox" id="showDisabledUnits" checked> Show Disabled
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table id="manageUnitsTable">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>Code</th>
+                                    <th>Unit Name</th>
+                                    <th>Source</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transaction History Page -->
+            <div id="historyPage" class="page">
+                <h1>Transaction History</h1>
+                
+                <!-- Date Filter Section -->
+                <div class="filters-container">
+                    <div class="filter-group">
+                        <label>From Date</label>
+                        <input type="date" id="filterFromDate">
+                    </div>
+                    <div class="filter-group">
+                        <label>To Date</label>
+                        <input type="date" id="filterToDate">
+                    </div>
+                    <div class="filter-group">
+                        <button type="button" class="btn btn-primary" onclick="applyDateFilter()">Apply</button>
+                        <button type="button" class="btn btn-secondary" onclick="resetDateFilter()">Reset</button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table id="transactionTable">
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th>Trans. ID</th>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Category</th>
+                                <th>Item(s)</th>
+                                <th>Price/Amount</th>
+                                <th>Quantity</th>
+                                <th>Remark</th>
+                                <th>Total</th>
+                                <th>Account</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Account Page -->
+            <div id="accountPage" class="page">
+                <h1>Account Management</h1>
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="addAccount">Add Account</button>
+                    <button class="tab-btn" data-tab="accountDetails">Details</button>
+                </div>
+
+                <!-- Add Account Tab -->
+                <div id="addAccount" class="tab-content active">
+                    <form id="accountForm" class="form-grid">
+                        <div class="form-group">
+                            <label>Account Type</label>
+                            <select id="accountType" required>
+                                <option value="">Select Account Type</option>
+                                <option value="Cash">Cash</option>
+                                <option value="Bank">Bank Account</option>
+                                <option value="Credit Card">Credit Card</option>
+                                <option value="FD">Fixed Deposit (FD)</option>
+                                <option value="RD">Recurring Deposit (RD)</option>
+                                <option value="PPF">PPF Account</option>
+                                <option value="Mutual Fund">Mutual Fund Account</option>
+                                <option value="Demat">Demat Account</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="accountNameGroup">
+                            <label>Account Name</label>
+                            <input type="text" id="accountName" required>
+                        </div>
+                        <div class="form-group" id="bankNameGroup" style="display: none;">
+                            <label>Bank Name</label>
+                            <input type="text" id="bankName">
+                        </div>
+                        <div class="form-group" id="accountNumberGroup" style="display: none;">
+                            <label>Account Number (Last 4 digits)</label>
+                            <input type="text" id="accountNumber" maxlength="4" pattern="[0-9]{4}">
+                        </div>
+                        <div class="form-group">
+                            <label>Opening Balance</label>
+                            <input type="number" id="openingBalance" step="0.01" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <button type="submit" class="btn btn-primary">Add Account</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Account Details Tab -->
+                <div id="accountDetails" class="tab-content">
+                    <div class="table-container">
+                        <table id="accountDetailsTable">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>Type</th>
+                                    <th>Name</th>
+                                    <th>Bank Name</th>
+                                    <th>Account Number</th>
+                                    <th>Balance</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Page -->
+            <div id="reportsPage" class="page">
+                <h1>Reports</h1>
+                
+                <!-- Report Filters -->
+                <div class="report-controls">
+                    <div class="filter-group">
+                        <label>Report Type</label>
+                        <select id="reportType">
+                            <option value="all">All Transactions</option>
+                            <option value="category">Category-wise</option>
+                            <option value="item">Item-wise</option>
+                            <option value="account">Account-wise</option>
+                            <option value="date">Date-wise Summary</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>From Date</label>
+                        <input type="date" id="reportFromDate">
+                    </div>
+                    <div class="filter-group">
+                        <label>To Date</label>
+                        <input type="date" id="reportToDate">
+                    </div>
+                    <div class="filter-group">
+                        <label>Transaction Type</label>
+                        <select id="reportTransType">
+                            <option value="">All</option>
+                            <option value="Income">Income</option>
+                            <option value="Expense">Expense</option>
+                            <option value="Transfer">Transfer</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <button type="button" class="btn btn-primary" onclick="generateReport()">Generate Report</button>
+                        <button type="button" class="btn btn-success" onclick="exportToPDF()">Export PDF</button>
+                        <button type="button" class="btn btn-success" onclick="exportToExcel()">Export Excel</button>
+                    </div>
+                </div>
+
+                <!-- Report Summary -->
+                <div id="reportSummary" class="report-summary" style="display:none;">
+                    <div class="summary-card">
+                        <h3>Total Income</h3>
+                        <p id="reportTotalIncome">₹0.00</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Total Expense</h3>
+                        <p id="reportTotalExpense">₹0.00</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Net Balance</h3>
+                        <p id="reportNetBalance">₹0.00</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Transaction Count</h3>
+                        <p id="reportTransCount">0</p>
+                    </div>
+                </div>
+
+                <!-- Report Table -->
+                <div class="table-container">
+                    <table id="reportTable">
+                        <thead id="reportTableHead">
+                            <tr>
+                                <th>S.No</th>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Category</th>
+                                <th>Item</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Remark</th>
+                                <th>Total</th>
+                                <th>Account</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- About Page -->
+            <div id="aboutPage" class="page">
+                <div class="about-container">
+                    <h1>About Home Expense Manager</h1>
+                    <div class="about-content">
+                        <div class="about-section">
+                            <h2>📱 Application Information</h2>
+                            <p><strong>Version:</strong> 1.1</p>
+                            <p><strong>Release Date:</strong> December 2025</p>
+                            <p><strong>Description:</strong> A comprehensive personal finance management application to track income, expenses, transfers, and manage multiple accounts efficiently.</p>
+                        </div>
+
+                        <div class="about-section">
+                            <h2>✨ Core Features</h2>
+                            <ul>
+                                <li>Multi-account management (Cash, Bank, Credit Card, Wallet)</li>
+                                <li>Income and expense tracking with categories and items</li>
+                                <li>Multi-item transactions support</li>
+                                <li>Credit/pending payment tracking with pay later option</li>
+                                <li>Interactive dashboard with charts and analytics</li>
+                                <li>Transaction history with advanced filters</li>
+                                <li>Comprehensive reporting with PDF/Excel export</li>
+                                <li>Category and item management</li>
+                                <li>Real-time balance calculations</li>
+                            </ul>
+                        </div>
+
+                        <div class="about-section">
+                            <h2>🆕 New in Version 1.1</h2>
+                            <ul>
+                                <li><strong>Transfer Transactions:</strong> Transfer money between accounts with full tracking</li>
+                                <li><strong>Edit Transfers:</strong> Modify transfer details with automatic balance adjustments</li>
+                                <li><strong>Password Change:</strong> Change password from the login screen</li>
+                                <li><strong>Smart Account Filtering:</strong> Transfer destination excludes source account</li>
+                                <li><strong>Enhanced Transaction Edit:</strong> Full modal with On Credit toggle support</li>
+                                <li><strong>Improved Delete Handling:</strong> Proper balance reversal for all transaction types</li>
+                                <li><strong>Better Report Exports:</strong> Improved PDF layout and Excel compatibility</li>
+                            </ul>
+                        </div>
+
+                        <div class="about-section">
+                            <h2>💡 Key Functionalities</h2>
+                            <ul>
+                                <li><strong>On Credit Toggle:</strong> Mark expenses as pending and pay later from any account</li>
+                                <li><strong>Balance Protection:</strong> Insufficient balance warnings prevent overdrafts</li>
+                                <li><strong>Transaction Codes:</strong> Unique IDs for easy transaction identification</li>
+                                <li><strong>Advanced Search:</strong> Filter by date, type, category, account, and amount</li>
+                                <li><strong>Dashboard Analytics:</strong> Visual charts for income vs expense trends</li>
+                                <li><strong>Account Details:</strong> Click on account card to view account-specific transactions</li>
+                            </ul>
+                        </div>
+
+                        <div class="about-section developer-info">
+                            <h2>👨‍💻 Developer Information</h2>
+                            <div class="developer-card">
+                                <div class="developer-avatar">LBP</div>
+                                <div class="developer-details">
+                                    <h3>Learnbyprofessional</h3>
+                                    <p class="developer-title">Full Stack Developer</p>
+                                    <p class="developer-email">
+                                        <span class="email-icon">📧</span>
+                                        <a href="mailto:learnbyprofessional@gmail.com">learnbyprofessional@gmail.com</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="about-section">
+                            <h2>🛠️ Technologies Used</h2>
+                            <div class="tech-stack">
+                                <span class="tech-badge">Node.js</span>
+                                <span class="tech-badge">Express.js</span>
+                                <span class="tech-badge">SQLite</span>
+                                <span class="tech-badge">Chart.js</span>
+                                <span class="tech-badge">jsPDF</span>
+                                <span class="tech-badge">HTML5</span>
+                                <span class="tech-badge">CSS3</span>
+                                <span class="tech-badge">JavaScript</span>
+                                <span class="tech-badge">bcrypt</span>
+                            </div>
+                        </div>
+
+                        <div class="about-section">
+                            <h2>📄 License</h2>
+                            <p>© 2024-2025 Home Expense Manager. All rights reserved.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="app.js?v=8"></script>
+</body>
+</html>

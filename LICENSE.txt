@@ -1,0 +1,55 @@
+MIT License
+
+Copyright (c) 2024-2025 Learnbyprofessional
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+HOME EXPENSE MANAGER V1.1
+Open Source Personal Finance Management Application
+
+WHAT YOU CAN DO:
+✅ Use the software for personal or commercial purposes
+✅ Modify the source code
+✅ Distribute the software
+✅ Use it privately
+✅ Sublicense
+
+YOUR RESPONSIBILITIES:
+📋 Include the original copyright notice
+📋 Include the license text in distributions
+
+DATA PRIVACY:
+🔒 All data is stored locally on your computer
+🔒 No data is transmitted to external servers
+🔒 The database is encrypted for your security
+🔒 You are responsible for backing up your data
+
+CONTRIBUTING:
+We welcome contributions! If you have suggestions or improvements:
+📧 Email: learnbyprofessional@gmail.com
+🌐 Submit issues or pull requests on GitHub
+
+---
+
+Version: 1.1
+Release Date: December 2025
+Developer: Learnbyprofessional
+Contact: learnbyprofessional@gmail.com
